@@ -1,20 +1,20 @@
 const express = require('express')
 const app = express()
-const port = 5000
-
 const data = require('./data.json')
+const path = require('path');
 
-app.use(express.static(__dirname + '/public'));
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-})
+// Setting up a static directory for the files in /pub
+// using Express middleware.
+// Don't put anything in /pub that you don't want the public to have access to!
+app.use(express.static(path.join(__dirname, '/public')))
+
 app.get('/getItems', (req, res) => {
     res.json(data);
   });
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
-  });
+  const port = process.env.PORT || 5000
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}...`)
+  })  // localhost development port 5000  (http://localhost:5000)
+     // We've bound that port to localhost to go to our express server.
+     // Must restart web server when you make changes to route handlers.
